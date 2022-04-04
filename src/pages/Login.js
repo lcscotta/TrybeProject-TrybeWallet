@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { userAction } from '../actions';
 
 // this.state = {
@@ -9,56 +12,67 @@ import { userAction } from '../actions';
 //   inputPassword: '',
 // }; // Fim do state
 
-class Wallet extends React.Component {
-function ultimateValidator() {
+function ultimateValidator(email, password, func) {
   // Validador de emails, senhas, etc.
   const minValue = 6;
-  const passValid = inputPassword.lenght >= minValue;
-  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail);
+  const passValid = password.lenght >= minValue;
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const inputs = [passValid, emailValid];
   const validadeInputs = inputs.every((input) => input === true);
   if (validadeInputs) func(false);
 }
 
-function handleClick() {
+function Login(props) {
+  const [email, inputEmail] = useState('');
+  const [password, inputPassword] = useState('');
+  const [btnDisabler, setIsDisabled] = useState(true);
+  const history = useHistory();
+
+  useEffect(() => {
+    ultimateValidator(email, password, setIsDisabled);
+  }, [email, password]);
+
+  function handleClick() {
   // Função que muda rota para /carteira após clicar em ENTRAR [criar]
-  const { dispatch } = props;
-  dispatch(userAction(email));
-  history.push('/carteira');
-}
-//   } // Fim da função
-// } // Fim do Constructor
+    const { dispatch } = props;
+    dispatch(userAction(email));
+    history.push('/carteira');
+  }
 
-// render() {
-return (
-  <div data-testid="page-login">
-    Email:
-    <input
-      type="email"
-      id="email"
-      data-testid="inputEmail"
-      name="email"
-      value={ email }
-      onChange={ (e) => setEmail(e.target.value) }
-    />
+  return (
+    <div data-testid="page-login">
+      Email:
+      <input
+        type="email"
+        id="email"
+        data-testid="email-input"
+        name="email"
+        value={ email }
+        onChange={ (e) => inputEmail(e.target.value) }
+      />
 
-    Senha:
-    <input
-      type="password"
-      id="password"
-      data-testid="inputPassword"
-      name="password"
-      value={ password }
-      onChange={ (e) => setPassword(e.target.value) }
-    />
-    <button
-      type="button"
-      disabled={ btnDisabler }
-      onClick={ () => handleClick() }
-    >
-      Entrar
-    </button>
-  </div>
-);
-}
-export default Login;
+      Senha:
+      <input
+        type="password"
+        id="password"
+        data-testid="password-input"
+        name="password"
+        value={ password }
+        onChange={ (e) => inputPassword(e.target.value) }
+      />
+      <button
+        type="button"
+        disabled={ btnDisabler }
+        onClick={ () => handleClick() }
+      >
+        Entrar
+      </button>
+    </div>
+  );
+} // Fim do Login
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()(Login);
