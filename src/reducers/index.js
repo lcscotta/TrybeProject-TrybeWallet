@@ -3,12 +3,12 @@
 import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
-import App from '../App';
-// import store from './store';
 // import PropTypes from 'prop-types';
-// import { createStore, applyMiddleware } from 'redux';
-// import { composeWithDevTools } from 'redux-devtools-extension';
-// import thunk from 'redux-thunk';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import thunk from 'redux-thunk';
+import store from './store';
+import App from '../App';
 // import reducer from '../reducers';
 // api: <https://economia.awesomeapi.com.br/json/all>
 
@@ -16,7 +16,16 @@ import App from '../App';
 // ATENÇÃO: você obrigatoriamente tem que utilizar as chaves "user" e "wallet" no seu estado global
 
 class indexApp extends React.Component {
-  // Dentro daqui só passa as rotas e uso o browserRouter. NÃO MEXER!
+  constructor() {
+    super();
+    const store = createStore(
+      reducer,
+      composeWithDevTools(
+        applyMiddleware(thunk),
+      ),
+    ); // Fim da variável store
+  } // Fim do constructor
+
   render() {
     return (
       <BrowserRouter>
