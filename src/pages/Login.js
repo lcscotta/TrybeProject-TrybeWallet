@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userAction } from '../actions';
 
@@ -23,17 +23,19 @@ function ultimateValidator(email, password, func) {
 }
 
 function Login(props) {
+  // Função de Login que engloba tudo e retorna a pagina funfando.
   const [email, inputEmail] = useState('');
   const [password, inputPassword] = useState('');
   const [btnDisabler, setIsDisabled] = useState(true);
   const history = useHistory();
+  const direction = false;
 
   useEffect(() => {
     ultimateValidator(email, password, setIsDisabled);
   }, [email, password]);
 
   function handleClick() {
-  // Função que muda rota para /carteira após clicar em ENTRAR [criar]
+  // Função que muda rota para /carteira após clicar em entrar
     const { dispatch } = props;
     dispatch(userAction(email));
     history.push('/carteira');
@@ -60,6 +62,7 @@ function Login(props) {
         value={ password }
         onChange={ (e) => inputPassword(e.target.value) }
       />
+
       <button
         type="button"
         disabled={ btnDisabler }
@@ -67,6 +70,10 @@ function Login(props) {
       >
         Entrar
       </button>
+      (!direction :
+      {' '}
+      <Redirect to="/carteira" />
+      )
     </div>
   );
 } // Fim do Login
