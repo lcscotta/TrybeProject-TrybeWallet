@@ -1,9 +1,10 @@
 // import user from './user';
 // import wallet from './wallet';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// lembrar de incluir o Provider ali em cima, quando usar.
+import { BrowserRouter } from 'react-router-dom';
 import React from 'react';
-import Login from '../pages/Login';
+import { Provider } from 'react-redux';
+import App from '../App';
+// import store from './store';
 // import PropTypes from 'prop-types';
 // import { createStore, applyMiddleware } from 'redux';
 // import { composeWithDevTools } from 'redux-devtools-extension';
@@ -19,15 +20,12 @@ class indexApp extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Switch>
-          <Route
-            exact
-            path="/"
-          >
-            <Login />
-          </Route>
-        </Switch>
-      </BrowserRouter> // Fim do elemento pai BrowserRouter
+        <App />
+        <Provider store={ store }>
+          <App />
+        </Provider>
+      </BrowserRouter>,
+      document.getElementById('root')
     ); // Fim do return
   } // Fim do render
 } // Fim do componente

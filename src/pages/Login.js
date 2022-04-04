@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 // import { createUser } from '../services/userAPI';
 
 class Login extends React.Component {
@@ -8,7 +8,7 @@ class Login extends React.Component {
       <div data-testid="page-login">
         Login
         <button type="submit">Entrar</button>
-        <Redirect to="/carteira" />
+        {/* <Redirect to="/carteira" /> */}
       </div>
     );
   }
