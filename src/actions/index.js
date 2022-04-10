@@ -1,8 +1,32 @@
-// Coloque aqui suas actions
+export const userAction = (payload) => ({ type: 'USER_ACTION', payload });
 
-import { USER_LOGIN } from '../reducers/user';
-import { WALLET_ACTION } from '../reducers/wallet';
+const REQUEST_COINS = 'REQUEST_COINS';
+const RECEIVE_COINS = 'RECEIVE_COINS';
+const FAILED_REQUEST = 'FAILED_REQUEST';
 
-export const userAction = (value) => ({ type: USER_LOGIN, payload: value });
+const requestCoins = () => ({
+  type: REQUEST_COINS });
 
-export const walletAction = (value) => ({ type: WALLET_ACTION, payload: value });
+const receiveCoins = (payload) => ({
+  type: RECEIVE_COINS,
+  payload });
+
+const failedRequest = (error) => ({
+  type: FAILED_REQUEST,
+  payload: error });
+
+export function fetchCoins() {
+  return async (dispatch) => {
+    dispatch(requestCoins());
+    try {
+      const resolve = await fetch('https://economia.awesomeapi.com.br/json/all');
+      const data = await resolve.json();
+      const arrayData = Object.keys(data);
+      const filteredData = arrayData.filter((coin) => coin !== 'USDT');
+      console.log(filteredData);
+      dispatch(receiveCoins(filteredData));
+    } catch (error) {
+      dispatch(failedRequest(error));
+    }
+  };
+}
