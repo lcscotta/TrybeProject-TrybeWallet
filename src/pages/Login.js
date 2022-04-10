@@ -72,7 +72,7 @@ class Login extends React.Component {
           </label>
           <button
             type="button"
-            disabled={ btnDisabler }
+            disabled={ !btnDisabler }
             onClick={ () => { addUser(email); history.push('/carteira'); } }
           >
             Entrar
