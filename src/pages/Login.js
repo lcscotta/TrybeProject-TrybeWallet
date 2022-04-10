@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userAction } from '../actions/index';
 
@@ -10,7 +9,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       senha: '',
-      btnDisabler: false,
+      btnDisabler: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -30,12 +29,12 @@ class Login extends React.Component {
     );
     const minValue = 6;
     const passValid = senha.length >= minValue;
-    const emailValidado = email.length > 0 && emailValido.test(email);
+    const emailValidado = email.length >= minValue && emailValido.test(email);
 
     if (emailValidado && passValid) {
-      this.setState({ btnDisabler: true });
-    } else {
       this.setState({ btnDisabler: false });
+    } else {
+      this.setState({ btnDisabler: true });
     }
   }
 
@@ -64,7 +63,7 @@ class Login extends React.Component {
               type="password"
               id="password"
               data-testid="password-input"
-              name="password"
+              name="senha"
               value={ senha }
               placeholder="Senha"
               onChange={ this.handleChange }
@@ -72,12 +71,11 @@ class Login extends React.Component {
           </label>
           <button
             type="button"
-            disabled={ !btnDisabler }
+            disabled={ btnDisabler }
             onClick={ () => { addUser(email); history.push('/carteira'); } }
           >
             Entrar
           </button>
-          <Link to="/carteira">Wallet</Link>
         </form>
       </div>
     );
