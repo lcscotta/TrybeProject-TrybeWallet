@@ -4,6 +4,9 @@ const INITIAL_STATE = {
   error: '',
   currencies: [],
   expenses: [],
+  errorExchange: '',
+  id: '',
+  exchange: {},
 };
 
 function walletReducer(state = INITIAL_STATE, action) {
@@ -14,6 +17,12 @@ function walletReducer(state = INITIAL_STATE, action) {
     return { ...state, currencies: action.payload, isFetching: false };
   case 'FAILED_REQUEST':
     return { ...state, error: action.payload, isFetching: false };
+  case 'REQUEST_EXCHANGE':
+    return { ...state, isFetching: true };
+  case 'RECEIVE_EXCHANGE':
+    return { ...state, expenses: [...state.expenses, action.payload], isFetching: false };
+  case 'FAILED_REQUEST_EXCHANGE':
+    return { ...state, errorExchange: action.payload, isFetching: false };
   default:
     return state;
   }
